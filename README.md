@@ -1,21 +1,10 @@
 # student_attendance_control
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-still under development
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Merhaba
+Projenin çalışması için bilgisayarınıza npm yüklü olması gerekmektedir.
+api desteğini internet üzerinden değil kendi localinden alır. bu sebeple Local sunucu oluşturmanız gerekiyor.
+Terminalden,
+npm install -g json-server 
+girişini yaptıktan sonra,
+json-server --host (internet bilgilerinizde yazan IPv4 adresini parantez içine almadan yazınız) (json dosya yolu benim örneğim: lib/data/students.json parantez içine almadan yazınız)
+böylece çalışır hale gelecektir. 
+Doğru giriş için json dosyasını kontrol etmeyi unutmayınız.
