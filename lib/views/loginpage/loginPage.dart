@@ -1,10 +1,14 @@
 // ignore_for_file: unused_local_variable, prefer_const_constructors
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_attendance_control/QRCodeScannerPage.dart';
+import 'package:student_attendance_control/model/user_model.dart';
+import 'package:student_attendance_control/service/user_service.dart';
+import 'package:student_attendance_control/theme/themeColor.dart';
 
-const primaryColor = Color(0xff21254A);
+import 'package:student_attendance_control/views/qrcodepage/qrHomePage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,14 +18,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+  UserService _service = UserService();
+  List<ModelUsersLogin?> users = [];
+
   late AnimationController animationController;
   late AnimationController loginAnimationController;
   late Animation<double> rotateAnimationValues;
 
   late Animation<double> shakingAnimationValues;
 
-  var tfUserName = TextEditingController();
-  var tfPassword = TextEditingController();
+  final TextEditingController tfUserName = TextEditingController();
+  final TextEditingController tfPassword = TextEditingController();
   bool _isChecked = false;
 
   Future<void> saveInfo(
@@ -52,6 +59,15 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
+    _service.fetchUsers().then((value) {
+      if (value != null && value.usersLogin != null) {
+        setState(() {
+          users = value.usersLogin!;
+        });
+      }
+    });
+
     getInfo();
 
     animationController = AnimationController(
@@ -85,24 +101,17 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor,
+      backgroundColor: AppColors.primary,
       appBar: AppBar(
         title: Text(""),
-        backgroundColor: primaryColor,
-        actions: <Widget>[
-          new FloatingActionButton(
-            child: Text("EN"),
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-            onPressed: () {},
-          )
-        ],
+        backgroundColor: AppColors.primary,
       ),
       body: getLoginForm(context),
     );
   }
 
   Widget getLoginForm(BuildContext context) {
+    //username
     var txtUserName = TextFormField(
       controller: tfUserName,
       obscureText: false,
@@ -122,7 +131,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             borderSide: BorderSide(width: 3, color: Colors.white)),
       ),
     );
-
+    //password
     var txtPassword = TextFormField(
       controller: tfPassword,
       obscureText: true,
@@ -174,21 +183,25 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       elevation: 15,
       child: MaterialButton(
         onPressed: () async {
-          if (tfUserName.text == "admin" && tfPassword.text == "admin") {
-            if (_isChecked) {
-              await saveInfo(tfUserName.text, tfPassword.text, _isChecked);
+          for (var value in users) {
+            if (value?.mail == tfUserName.text &&
+                value?.password == tfPassword.text) {
+              if (_isChecked) {
+                await saveInfo(tfUserName.text, tfPassword.text, _isChecked);
+              } else {
+                deleteInfo();
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => QRCodeScannerPage()),
+              );
+              break;
             } else {
-              await deleteInfo();
-            }
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => QRCodeScannerPage()),
-            );
-          } else {
-            for (var i = 0; i < 3; i++) {
-              await loginAnimationController
-                  .forward()
-                  .whenComplete(() => loginAnimationController.reverse());
+              for (var i = 0; i < 3; i++) {
+                await loginAnimationController
+                    .forward()
+                    .whenComplete(() => loginAnimationController.reverse());
+              }
             }
           }
         },
