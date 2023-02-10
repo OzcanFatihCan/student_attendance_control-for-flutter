@@ -1,0 +1,17 @@
+{
+    "Users":{
+        "usersLogin":[{
+            "id":"1",
+            "mail":"210404052@st.biruni.edu.tr",
+            "password":"210404052"
+        }
+        ],
+        "usersInfo":[{
+            "id": 1,
+            "name": "Özcan Fatih",
+            "surname": "Can",
+            "department": "Bilgisayar Mühendisliği"
+        }
+    ]
+    }
+}
