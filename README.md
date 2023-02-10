@@ -14,3 +14,8 @@ json-server --host (internet bilgilerinizde yazan IPv4 adresini parantez içine 
 böylece çalışır hale gelecektir. 
 
 Doğru giriş için json dosyasını kontrol etmeyi unutmayınız.
+
+
+https://user-images.githubusercontent.com/93872480/218092775-1203d219-1d06-4c6e-b296-431de71c4a50.mp4
+
+
